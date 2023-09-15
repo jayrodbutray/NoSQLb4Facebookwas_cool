@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, Types, model } = mongoose;
-const thoughtsSchema = require('./Thought');
+const thoughtSchema = require('./Thought');
 
 const userSchema = new Schema(
     {
@@ -21,10 +21,11 @@ const userSchema = new Schema(
             match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
         },
         friends: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            virtuals: true,
         }],
-        thoughts: [thoughtsSchema],
+        thought: [thoughtSchema],
     },
     {
         toJSON: {
@@ -33,6 +34,20 @@ const userSchema = new Schema(
     }
 );
 
-const User = model('User', userSchema);
+userSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+});
+
+const userId = [];
+
+User.findById(userId).populate('friends').exec((err, user) => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log(`User ${user.username} has ${user.friendCount} friends`);
+});
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
