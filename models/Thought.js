@@ -57,13 +57,17 @@ thoughtSchema.virtual('reactionCount').get(function() {
 
 const thoughtId = [];
 
-Thought.findById(thoughtId, (err, thought) =>{
-    if(err) {
-        console.error(err);
-        return;
+Thought.findById(thoughtId)
+  .then((thought) => {
+    if (!thought) {
+      console.log(`No thought found with ID ${thoughtId}`);
+      return;
     }
     console.log(`Thought with ID ${thoughtId} has ${thought.reactionCount} reactions.`);
-});
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 module.exports = Thought;
 
