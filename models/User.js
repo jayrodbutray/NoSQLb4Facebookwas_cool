@@ -21,7 +21,7 @@ const userSchema = new Schema(
             match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
         },
         friends: [{
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'User',
             virtuals: true,
         }],

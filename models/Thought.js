@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const { Schema, Types, model } = mongoose;
 
 
-const reactionSchema = new mongoose.Schema({
+const reactionSchema = new Schema({
     content: String,
-    userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    userId: {type: Schema.Types.ObjectId, ref: 'User'},
 
     assignmentId: {
         type: Schema.Types.ObjectId,
