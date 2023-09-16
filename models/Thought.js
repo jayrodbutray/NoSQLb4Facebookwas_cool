@@ -1,12 +1,10 @@
-const mongoose = require('mongoose');
-const { Schema, Types, model } = mongoose;
 
+const { Schema, Types, model } = require('mongoose');
 
-const reactionSchema = new Schema({
-    content: String,
-    userId: {type: Schema.Types.ObjectId, ref: 'User'},
+const reactionSchema = new Schema(
+    {
 
-    assignmentId: {
+    reactionId: {
         type: Schema.Types.ObjectId,
         default: () => new Types.ObjectId(),
       },
@@ -22,38 +20,50 @@ const reactionSchema = new Schema({
         createdAt: {
             type: Date,
             default: Date.now(),
-            getters: true,
+            get: (createdAtVal) => dateFormat(createdAtVal),
         },
       },
+      {
+      toJSON: {
+        getters: true,
+      },
+    }
 );
 
 const thoughtSchema = new Schema(
     {
-        content: String,
-        reactions: [reactionSchema],
-
         thoughtText: {
             type: String,
             required: true,
+            minLength: 1,
             maxlength: 280,
-            minlength: 1,
         },
         createdAt: {
             type: Date,
             default: Date.now(),
-            getters: true,
+            get: (createdAtVal) => dateFormat(createdAtVal),
         },
         username: {
             type: String,
             required: true,
         },
+        reactions: [reactionSchema],
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true,
+        },
+        id: false,
     }
 );
-const Thought = model('Thought', thoughtSchema);
+
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 });
+
+const Thought = model('Thought', thoughtSchema);
 
 const thoughtId = [];
 
@@ -69,8 +79,4 @@ Thought.findById(thoughtId)
     console.error(err);
   });
 
-  module.exports = {
-    Thought: model('Thought', thoughtSchema),
-    Reaction: model('Reaction', reactionSchema),
-  };
-  
+  module.exports = Thought;
