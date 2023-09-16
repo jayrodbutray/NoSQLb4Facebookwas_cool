@@ -49,7 +49,7 @@ const thoughtSchema = new Schema(
         },
     }
 );
-const Thought = mongoose.model('Thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 thoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
@@ -69,6 +69,8 @@ Thought.findById(thoughtId)
     console.error(err);
   });
 
-module.exports = Thought;
-
-module.exports = mongoose.model('Reaction', reactionSchema);
+  module.exports = {
+    Thought: model('Thought', thoughtSchema),
+    Reaction: model('Reaction', reactionSchema),
+  };
+  

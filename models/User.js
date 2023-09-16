@@ -48,6 +48,6 @@ User.findById(userId).populate('friends').exec((err, user) => {
     console.log(`User ${user.username} has ${user.friendCount} friends`);
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
