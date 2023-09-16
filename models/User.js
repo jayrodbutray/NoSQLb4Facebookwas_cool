@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const { Schema, Types, model } = mongoose;
-const thoughtSchema = require('./Thought');
+const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema(
     {
@@ -23,20 +21,25 @@ const userSchema = new Schema(
         friends: [{
             type: Schema.Types.ObjectId,
             ref: 'User',
-            virtuals: true,
         }],
-        thought: [thoughtSchema],
+        thoughts: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Thought'
+        }]
     },
     {
         toJSON: {
             getters: true,
+            virtuals: true
         },
-    }
-);
+        id: false
+    });
 
 userSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 });
+
+const User = model('User', userSchema);
 
 const userId = [];
 
@@ -47,7 +50,5 @@ User.findById(userId).populate('friends').exec((err, user) => {
     }
     console.log(`User ${user.username} has ${user.friendCount} friends`);
 });
-
-const User = model('User', userSchema);
 
 module.exports = User;
