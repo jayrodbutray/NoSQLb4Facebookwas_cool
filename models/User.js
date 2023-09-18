@@ -48,7 +48,12 @@ User.findById(userId).populate('friends').exec((err, user) => {
         console.error(err);
         return;
     }
-    console.log(`User ${user.username} has ${user.friendCount} friends`);
+    if(user){
+        console.log(`User ${user.username} has ${user.friendCount} friends`);
+    }else {
+        console.log('User not found');
+    }
+    
 });
 
 module.exports = User;
