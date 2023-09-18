@@ -43,17 +43,14 @@ const User = model('User', userSchema);
 
 const userId = [];
 
-User.findById(userId).populate('friends').exec((err, user) => {
-    if (err) {
-        console.error(err);
-        return;
-    }
+User.findById(userId).populate('friends').then((user) => {
     if(user){
         console.log(`User ${user.username} has ${user.friendCount} friends`);
     }else {
         console.log('User not found');
     }
-    
+    }).catch((err) => {
+        console.error(err);
 });
 
 module.exports = User;
