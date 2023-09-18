@@ -1,6 +1,20 @@
 
 const { Schema, Types, model } = require('mongoose');
 
+function dateFormat(createdAtVal) {
+  const date = new Date(createdAtVal);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-indexed, so add 1 and pad with '0' if necessary
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDate;
+}
+
 const reactionSchema = new Schema(
     {
 
@@ -19,8 +33,8 @@ const reactionSchema = new Schema(
       },
         createdAt: {
             type: Date,
-            default: Date.now(),
-            get: (createdAtVal) => dateFormat(createdAtVal),
+            default: Date.now,
+            get: dateFormat,
         },
       },
       {
@@ -40,8 +54,8 @@ const thoughtSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now(),
-            get: (createdAtVal) => dateFormat(createdAtVal),
+            default: Date.now,
+            get: dateFormat,
         },
         username: {
             type: String,
