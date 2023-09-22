@@ -15,7 +15,7 @@ function dateFormat(createdAtVal) {
   return formattedDate;
 }
 
-const reactionSchema = new Schema(
+const ReactionSchema = new Schema(
     {
 
     reactionId: {
@@ -61,7 +61,7 @@ const thoughtSchema = new Schema(
             type: String,
             required: true,
         },
-        reactions: [reactionSchema],
+        reactions: [ReactionSchema],
     },
     {
         toJSON: {
