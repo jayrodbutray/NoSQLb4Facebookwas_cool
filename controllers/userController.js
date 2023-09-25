@@ -69,6 +69,10 @@ module.exports = {
         return res.status(404).json({ message: 'User or friend not found' });
       }
   
+      if (user.friends.includes(req.params.friendId)) {
+        return res.status(400).json({ message: 'Friend already added' });
+      }
+  
       user.friends.push(friend);
       await user.save();
   
@@ -76,7 +80,6 @@ module.exports = {
     } catch (err) {
       res.status(500).json(err);
     }
-    console.log(friends);
   },
 
   async removeFriend(req, res) {
